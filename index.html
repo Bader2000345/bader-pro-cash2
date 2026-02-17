@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>برو كاش Pro Cash | المنصة الاحترافية</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* وضع احترافي هادئ (Light Mode - Frosted Glass) */
+            --bg-body: #dde1e6; 
+            --card-bg: rgb(243, 236, 236);
+            --primary: #3153c3;
+            --secondary: #1e0052;
+            --text-color: #2b4685;
+            --border-color: rgba(255, 255, 255, 0.4);
+            --input-bg: rgba(255, 255, 255, 0.5);
+        }
+
+        [data-theme="dark"] {
+            /* وضع احترافي عميق (Dark Mode - Deep Glass) */
+            --bg-body: #070b14;
+            --card-bg: rgba(11, 21, 43, 0.7);
+            --primary: #3b82f6;
+            --secondary: #8b5cf6;
+            --text-color: #f8fafc;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --input-bg: rgba(0, 0, 0, 0.2);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* خلفية سينمائية متحركة */
+        .glass-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle at 10% 20%, rgba(59, 131, 246, 0.418) 0%, transparent 40%),
+                        radial-gradient(circle at 90% 80%, rgba(124, 58, 237, 0.373) 0%, transparent 40%);
+            background: radial-gradient(circle at 10% 20%, rgba(59, 234, 246, 0.425) 0%, transparent 30%),
+                        radial-gradient(circle at 90% 80%, rgba(4, 255, 0, 0.418) 0%, transparent 35%);
+            
+                      
+        }
+
+        .blob {
+            position: absolute;
+            width: 500px; height: 500px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            filter: blur(100px);
+            border-radius: 50%;
+            opacity: 0.15;
+            animation: move 25s infinite alternate ease-in-out;
+        }
+        .blob-1 { top: -100px; right: -100px; }
+        .blob-2 { bottom: -150px; left: -150px; animation-delay: -5s; }
+
+        @keyframes move {
+            from { transform: translate(0, 0) rotate(0deg) scale(1); }
+            to { transform: translate(100px, 100px) rotate(90deg) scale(1.1); }
+        }
+
+        /* كرت التصميم الاحترافي */
+        .main-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            width: 100%;
+            max-width: 750px;
+            border-radius: 40px;
+            padding: 40px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 25px 50px -12px rgb(0, 0, 0);
+            position: relative;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 35px;
+        }
+
+        .logo h1 { font-weight: 900; font-size: 2rem; letter-spacing: -1px; background: linear-gradient(135deg, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .logo p { font-size: 0.85rem; font-weight: 700; opacity: 0.8; }
+
+        .theme-btn {
+            background: var(--input-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 800;
+            display: flex; align-items: center; gap: 8px;
+        }
+
+        .converter-grid {
+            display: grid;
+            grid-template-columns: 1fr 60px 1fr;
+            gap: 20px;
+            align-items: center;
+        }
+
+        @media (max-width: 768px) {
+            .converter-grid { grid-template-columns: 1fr; }
+            .swap-btn { transform: rotate(90deg); margin: 10px auto; }
+            .main-card { padding: 25px; border-radius: 30px; }
+        }
+
+        .box {
+            background: var(--input-bg);
+            padding: 25px;
+            border-radius: 30px;
+            border: 1px solid var(--border-color);
+        }
+
+        label { display: block; margin-bottom: 12px; font-weight: 800; color: var(--primary); font-size: 0.95rem; }
+
+        select {
+            width: 100%;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 12px;
+            border-radius: 15px;
+            font-size: 1.1rem;
+            font-weight: 900; /* خط العملات واضح جداً */
+            outline: none;
+            cursor: pointer;
+        }
+
+        input {
+            width: 100%;
+            margin-top: 15px;
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid var(--primary);
+            color: var(--text-color);
+            font-size: 2.2rem;
+            font-weight: 900;
+            text-align: center;
+            outline: none;
+            padding: 5px;
+        }
+
+        .swap-btn {
+            width: 55px; height: 55px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(50, 93, 161, 0.3);
+            color: rgb(235, 224, 224); font-size: 1.5rem;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .swap-btn:hover { transform: scale(1.1) rotate(180deg); }
+
+        .result-panel {
+            margin-top: 35px;
+            text-align: center;
+            padding: 30px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(124, 58, 237, 0.1));
+            border: 1px solid var(--border-color);
+        }
+
+        .result-panel h2 { font-size: 3.5rem; font-weight: 900; color: var(--primary); }
+        .rate-text { font-weight: 700; opacity: 0.8; margin-top: 5px; font-size: 0.95rem; }
+
+        footer {
+            margin-top: 30px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            font-weight: 700;
+            opacity: 0.6;
+        }
+    </style>
+</head>
+<body data-theme="dark">
+
+    <div class="glass-bg">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+    </div>
+
+    <div class="main-card">
+        <header>
+            <div class="logo">
+                <h1>PRO CASH</h1>
+                <p>المنصة الاحترافية لتحويل العملات والذهب</p>
+            </div>
+            <button class="theme-btn" onclick="toggleTheme()" id="themeBtn">☀️ الوضع الفاتح</button>
+        </header>
+
+        <div class="converter-grid">
+            <div class="box">
+                <label>من العملة / المعدن</label>
+                <select id="fromCurrency">
+                    <optgroup label="العملات الورقية">
+                        <option value="USD">🇺🇸 دولار أمريكي (USD)</option>
+                        <option value="SYP_NEW">🇸🇾 ليرة سورية - جديدة</option>
+                        <option value="SYP_OLD">🇸🇾 ليرة سورية - قديمة</option>
+                        <option value="EUR">🇪🇺 يورو (EUR)</option>
+                        <option value="SAR">🇸🇦 ريال سعودي (SAR)</option>
+                        <option value="AED">🇦🇪 درهم إماراتي (AED)</option>
+                        <option value="JOD">🇯🇴 دينار أردني (JOD)</option>
+                        <option value="TRY">🇹🇷 ليرة تركية (TRY)</option>
+                        <option value="EGP">🇪🇬 جنيه مصري (EGP)</option>
+                    </optgroup>
+                    <optgroup label="المعادن الثمينة">
+                        <option value="GOLD_24">🏆 غرام ذهب عيار 24</option>
+                        <option value="GOLD_21">✨ غرام ذهب عيار 21</option>
+                        <option value="GOLD_LIRA">🟡 ليرة ذهب</option>
+                        <option value="GOLD_OUNCE">💎 أونصة ذهب</option>
+                    </optgroup>
+                </select>
+                <input type="number" id="fromAmount" value="1">
+            </div>
+
+            <button class="swap-btn" onclick="swap()">⇄</button>
+
+            <div class="box">
+                <label>إلى العملة / المعدن</label>
+                <select id="toCurrency">
+                    <option value="SYP_NEW" selected>🇸🇾 ليرة سورية - جديدة</option>
+                    <option value="SYP_OLD">🇸🇾 ليرة سورية - قديمة</option>
+                    <option value="USD">🇺🇸 دولار أمريكي (USD)</option>
+                    <option value="EUR">🇪🇺 يورو (EUR)</option>
+                    <option value="SAR">🇸🇦 ريال سعودي (SAR)</option>
+                    <option value="AED">🇦🇪 درهم إماراتي (AED)</option>
+                    <option value="JOD">🇯🇴 دينار أردني (JOD)</option>
+                    <option value="TRY">🇹🇷 ليرة تركية (TRY)</option>
+                    <option value="EGP">🇪🇬 جنيه مصري (EGP)</option>
+                    <option value="GOLD_21">✨ غرام ذهب عيار 21</option>
+                    <option value="GOLD_24">🏆 غرام ذهب عيار 24</option>
+                    <option value="GOLD_LIRA">🟡 ليرة ذهب</option>
+                    <option value="GOLD_OUNCE">💎 أونصة ذهب</option>
+                </select>
+                <input type="text" id="toAmount" readonly placeholder="النتيجة">
+            </div>
+        </div>
+
+        <div class="result-panel">
+            <h2 id="finalVal">0.00</h2>
+            <p class="rate-text" id="rateInfo">جاري تحديث الأسعار...</p>
+        </div>
+
+        <footer>
+            <span id="lastUpdate">التحديث: --:--</span>
+            <span>PRO CASH © 2026</span>
+        </footer>
+    </div>
+
+    <script>
+        const API_KEY = '98283865c9c8318531236668';
+        let GOLD_PRICE_USD = 2150; 
+
+        async function update() {
+            const from = document.getElementById('fromCurrency').value;
+            const to = document.getElementById('toCurrency').value;
+            const amount = parseFloat(document.getElementById('fromAmount').value) || 0;
+
+            try {
+                const res = await fetch(`https://v6.exchangerate-api.com/v6/${API_KEY}/latest/USD`);
+                const data = await res.json();
+                const rates = data.conversion_rates;
+
+                const getRate = (code) => {
+                    if (code === 'USD') return 1;
+                    if (code === 'SYP_NEW') return rates.SYP;
+                    if (code === 'SYP_OLD') return rates.SYP * 100;
+                    if (code === 'GOLD_24') return 1 / (GOLD_PRICE_USD / 31.1035);
+                    if (code === 'GOLD_21') return 1 / ((GOLD_PRICE_USD / 31.1035) * 0.875);
+                    if (code === 'GOLD_LIRA') return 1 / (GOLD_PRICE_USD * 0.257); 
+                    if (code === 'GOLD_OUNCE') return 1 / GOLD_PRICE_USD;
+                    return rates[code];
+                };
+
+                const fRate = getRate(from);
+                const tRate = getRate(to);
+                const result = (amount / fRate) * tRate;
+
+                document.getElementById('toAmount').value = result.toLocaleString(undefined, {maximumFractionDigits: 2});
+                document.getElementById('finalVal').textContent = result.toLocaleString(undefined, {maximumFractionDigits: 2});
+                document.getElementById('rateInfo').textContent = `1 ${from} = ${(tRate/fRate).toFixed(4)} ${to}`;
+                document.getElementById('lastUpdate').textContent = `آخر تحديث: ${new Date().toLocaleTimeString('ar-SA')}`;
+            } catch (e) { console.error("API Error"); }
+        }
+
+        function swap() {
+            const f = document.getElementById('fromCurrency');
+            const t = document.getElementById('toCurrency');
+            [f.value, t.value] = [t.value, f.value];
+            update();
+        }
+
+        function toggleTheme() {
+            const b = document.body;
+            const isDark = b.getAttribute('data-theme') === 'dark';
+            b.setAttribute('data-theme', isDark ? 'light' : 'dark');
+            document.getElementById('themeBtn').textContent = isDark ? '🌙 الوضع الليلي' : '☀️ الوضع الفاتح';
+        }
+
+        document.querySelectorAll('input, select').forEach(el => el.addEventListener('input', update));
+        window.onload = update;
+    </script>
+</body>
+</html>
