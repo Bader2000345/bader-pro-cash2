@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>برو كاش Pro Cash | المنصة الاحترافية</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
-            /* وضع احترافي هادئ (Light Mode - Frosted Glass) */
             --bg-body: #dde1e6; 
-            --card-bg: rgb(243, 236, 236);
+            --card-bg: rgba(243, 236, 236, 0.9);
             --primary: #3153c3;
             --secondary: #1e0052;
             --text-color: #2b4685;
@@ -18,9 +18,8 @@
         }
 
         [data-theme="dark"] {
-            /* وضع احترافي عميق (Dark Mode - Deep Glass) */
             --bg-body: #070b14;
-            --card-bg: rgba(11, 21, 43, 0.7);
+            --card-bg: rgba(11, 21, 43, 0.8);
             --primary: #3b82f6;
             --secondary: #8b5cf6;
             --text-color: #f8fafc;
@@ -28,174 +27,233 @@
             --input-bg: rgba(0, 0, 0, 0.2);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; transition: all 0.3s ease; }
 
         body {
             background-color: var(--bg-body);
             color: var(--text-color);
             min-height: 100vh;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 20px;
-            overflow: hidden;
+            padding: 15px;
             position: relative;
+            overflow-x: hidden;
         }
 
-        /* خلفية سينمائية متحركة */
+        /* شريط الأسعار المتحرك */
+        .price-ticker {
+            width: 100%;
+            background: var(--primary);
+            color: white;
+            padding: 8px 0;
+            position: fixed;
+            top: 0;
+            z-index: 1000;
+            font-size: 0.85rem;
+            font-weight: bold;
+            overflow: hidden;
+        }
+        .ticker-content {
+            display: inline-block;
+            white-space: nowrap;
+            animation: ticker 30s linear infinite;
+        }
+        @keyframes ticker {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+
         .glass-bg {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             z-index: -1;
-            background: radial-gradient(circle at 10% 20%, rgba(59, 131, 246, 0.418) 0%, transparent 40%),
-                        radial-gradient(circle at 90% 80%, rgba(124, 58, 237, 0.373) 0%, transparent 40%);
-            background: radial-gradient(circle at 10% 20%, rgba(59, 234, 246, 0.425) 0%, transparent 30%),
-                        radial-gradient(circle at 90% 80%, rgba(4, 255, 0, 0.418) 0%, transparent 35%);
-            
-                      
+            background: radial-gradient(circle at 10% 20%, rgba(59, 234, 246, 0.1) 0%, transparent 40%),
+                        radial-gradient(circle at 90% 80%, rgba(4, 255, 0, 0.1) 0%, transparent 40%);
         }
 
-        .blob {
-            position: absolute;
-            width: 500px; height: 500px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            filter: blur(100px);
-            border-radius: 50%;
-            opacity: 0.15;
-            animation: move 25s infinite alternate ease-in-out;
-        }
-        .blob-1 { top: -100px; right: -100px; }
-        .blob-2 { bottom: -150px; left: -150px; animation-delay: -5s; }
-
-        @keyframes move {
-            from { transform: translate(0, 0) rotate(0deg) scale(1); }
-            to { transform: translate(100px, 100px) rotate(90deg) scale(1.1); }
-        }
-
-        /* كرت التصميم الاحترافي */
         .main-card {
             background: var(--card-bg);
             backdrop-filter: blur(25px);
             -webkit-backdrop-filter: blur(25px);
             width: 100%;
-            max-width: 750px;
-            border-radius: 40px;
-            padding: 40px;
+            max-width: 800px;
+            border-radius: 30px;
+            padding: 30px;
             border: 1px solid var(--border-color);
-            box-shadow: 0 25px 50px -12px rgb(0, 0, 0);
-            position: relative;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            margin-top: 50px;
         }
 
         header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 35px;
+            margin-bottom: 30px;
+            gap: 10px;
         }
 
-        .logo h1 { font-weight: 900; font-size: 2rem; letter-spacing: -1px; background: linear-gradient(135deg, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .logo p { font-size: 0.85rem; font-weight: 700; opacity: 0.8; }
+        .logo h1 { font-weight: 900; font-size: clamp(1.5rem, 5vw, 2rem); background: linear-gradient(135deg, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .logo p { font-size: 0.75rem; font-weight: 700; opacity: 0.8; }
 
         .theme-btn {
             background: var(--input-bg);
             border: 1px solid var(--border-color);
             color: var(--text-color);
-            padding: 10px 20px;
-            border-radius: 20px;
+            padding: 8px 15px;
+            border-radius: 15px;
             cursor: pointer;
             font-weight: 800;
-            display: flex; align-items: center; gap: 8px;
+            font-size: 0.8rem;
         }
 
         .converter-grid {
             display: grid;
             grid-template-columns: 1fr 60px 1fr;
-            gap: 20px;
+            gap: 15px;
             align-items: center;
         }
 
         @media (max-width: 768px) {
             .converter-grid { grid-template-columns: 1fr; }
             .swap-btn { transform: rotate(90deg); margin: 10px auto; }
-            .main-card { padding: 25px; border-radius: 30px; }
+            header { flex-direction: column; text-align: center; }
         }
 
         .box {
             background: var(--input-bg);
-            padding: 25px;
-            border-radius: 30px;
+            padding: 20px;
+            border-radius: 20px;
             border: 1px solid var(--border-color);
         }
 
-        label { display: block; margin-bottom: 12px; font-weight: 800; color: var(--primary); font-size: 0.95rem; }
+        label { display: block; margin-bottom: 8px; font-weight: 800; color: var(--primary); font-size: 0.9rem; }
 
         select {
             width: 100%;
             background: var(--card-bg);
             border: 1px solid var(--border-color);
             color: var(--text-color);
-            padding: 12px;
-            border-radius: 15px;
-            font-size: 1.1rem;
-            font-weight: 900; /* خط العملات واضح جداً */
+            padding: 10px;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 700;
             outline: none;
-            cursor: pointer;
         }
 
         input {
             width: 100%;
-            margin-top: 15px;
+            margin-top: 10px;
             background: transparent;
             border: none;
             border-bottom: 2px solid var(--primary);
             color: var(--text-color);
-            font-size: 2.2rem;
+            font-size: 1.8rem;
             font-weight: 900;
             text-align: center;
             outline: none;
-            padding: 5px;
         }
 
         .swap-btn {
-            width: 55px; height: 55px;
+            width: 50px; height: 50px;
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             border-radius: 50%;
             border: none;
             cursor: pointer;
-            box-shadow: 0 10px 20px rgba(50, 93, 161, 0.3);
-            color: rgb(235, 224, 224); font-size: 1.5rem;
+            color: white; font-size: 1.2rem;
             display: flex; align-items: center; justify-content: center;
+            margin: auto;
         }
-        .swap-btn:hover { transform: scale(1.1) rotate(180deg); }
 
         .result-panel {
-            margin-top: 35px;
+            margin-top: 25px;
             text-align: center;
-            padding: 30px;
-            border-radius: 30px;
+            padding: 20px;
+            border-radius: 20px;
             background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(124, 58, 237, 0.1));
             border: 1px solid var(--border-color);
+            position: relative;
         }
 
-        .result-panel h2 { font-size: 3.5rem; font-weight: 900; color: var(--primary); }
-        .rate-text { font-weight: 700; opacity: 0.8; margin-top: 5px; font-size: 0.95rem; }
+        .result-panel h2 { font-size: clamp(2rem, 8vw, 3rem); font-weight: 900; color: var(--primary); }
+
+        .share-btn {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            cursor: pointer;
+        }
+
+        /* مخطط بياني */
+        .chart-container {
+            margin-top: 20px;
+            height: 150px;
+            width: 100%;
+        }
 
         footer {
-            margin-top: 30px;
+            margin-top: 20px;
             display: flex;
             justify-content: space-between;
-            font-size: 0.85rem;
+            font-size: 0.75rem;
             font-weight: 700;
             opacity: 0.6;
+            width: 100%;
+            max-width: 800px;
         }
+
+        /* --- Calculator --- */
+        .calc-toggle {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            width: 60px; height: 60px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            z-index: 1001;
+            font-size: 1.5rem;
+        }
+
+        .calculator-modal {
+            position: fixed;
+            bottom: 90px; left: 20px;
+            width: 280px;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 15px;
+            display: none;
+            z-index: 1001;
+        }
+        .calculator-modal.active { display: block; }
+
+        .calc-display { width: 100%; background: rgba(0,0,0,0.1); border-radius: 10px; padding: 10px; text-align: left; font-size: 1.2rem; margin-bottom: 10px; min-height: 40px; }
+        .calc-buttons { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; }
+        .calc-btn { padding: 10px; border-radius: 8px; border: 1px solid var(--border-color); background: var(--input-bg); color: var(--text-color); cursor: pointer; }
+        .calc-btn.op { background: var(--primary); color: white; }
     </style>
 </head>
 <body data-theme="dark">
 
-    <div class="glass-bg">
-        <div class="blob blob-1"></div>
-        <div class="blob blob-2"></div>
+    <div class="price-ticker">
+        <div class="ticker-content" id="tickerText">
+            جاري تحميل أسعار الصرف العالمية... 
+        </div>
     </div>
+
+    <div class="glass-bg"></div>
 
     <div class="main-card">
         <header>
@@ -255,8 +313,13 @@
         </div>
 
         <div class="result-panel">
+            <button class="share-btn" onclick="shareResult()">نسخ النتيجة 📋</button>
             <h2 id="finalVal">0.00</h2>
             <p class="rate-text" id="rateInfo">جاري تحديث الأسعار...</p>
+            
+            <div class="chart-container">
+                <canvas id="miniChart"></canvas>
+            </div>
         </div>
 
         <footer>
@@ -265,11 +328,49 @@
         </footer>
     </div>
 
+    <div class="calc-toggle" onclick="toggleCalc()">🖩</div>
+    <div class="calculator-modal" id="calcModal">
+        <div class="calc-display" id="calcDisplay">0</div>
+        <div class="calc-buttons">
+            <button class="calc-btn op" onclick="clearCalc()">C</button>
+            <button class="calc-btn op" onclick="btnClick('/')">÷</button>
+            <button class="calc-btn op" onclick="btnClick('*')">×</button>
+            <button class="calc-btn op" onclick="backspace()">⌫</button>
+            <button class="calc-btn" onclick="btnClick('7')">7</button>
+            <button class="calc-btn" onclick="btnClick('8')">8</button>
+            <button class="calc-btn" onclick="btnClick('9')">9</button>
+            <button class="calc-btn op" onclick="btnClick('-')">-</button>
+            <button class="calc-btn" onclick="btnClick('4')">4</button>
+            <button class="calc-btn" onclick="btnClick('5')">5</button>
+            <button class="calc-btn" onclick="btnClick('6')">6</button>
+            <button class="calc-btn op" onclick="btnClick('+')">+</button>
+            <button class="calc-btn" onclick="btnClick('1')">1</button>
+            <button class="calc-btn" onclick="btnClick('2')">2</button>
+            <button class="calc-btn" onclick="btnClick('3')">3</button>
+            <button class="calc-btn op" onclick="calculate()">=</button>
+            <button class="calc-btn" style="grid-column: span 2" onclick="btnClick('0')">0</button>
+            <button class="calc-btn" onclick="btnClick('.')">.</button>
+        </div>
+    </div>
+
     <script>
         const API_KEY = '98283865c9c8318531236668';
         let GOLD_PRICE_USD = 2150; 
+        let myChart;
+
+        // وظيفة حفظ التفضيلات
+        function savePreferences() {
+            localStorage.setItem('fromCur', document.getElementById('fromCurrency').value);
+            localStorage.setItem('toCur', document.getElementById('toCurrency').value);
+        }
+
+        function loadPreferences() {
+            if(localStorage.getItem('fromCur')) document.getElementById('fromCurrency').value = localStorage.getItem('fromCur');
+            if(localStorage.getItem('toCur')) document.getElementById('toCurrency').value = localStorage.getItem('toCur');
+        }
 
         async function update() {
+            savePreferences();
             const from = document.getElementById('fromCurrency').value;
             const to = document.getElementById('toCurrency').value;
             const amount = parseFloat(document.getElementById('fromAmount').value) || 0;
@@ -278,6 +379,10 @@
                 const res = await fetch(`https://v6.exchangerate-api.com/v6/${API_KEY}/latest/USD`);
                 const data = await res.json();
                 const rates = data.conversion_rates;
+
+                // تحديث شريط الأسعار
+                document.getElementById('tickerText').innerText = 
+                    ` 💵 USD/TRY: ${rates.TRY.toFixed(2)} | 💶 EUR/USD: ${(1/rates.EUR).toFixed(2)} | 🇸🇦 SAR/USD: ${(1/rates.SAR).toFixed(2)} | 💎 الذهب عيار 24: $${(GOLD_PRICE_USD/31.1).toFixed(2)} `;
 
                 const getRate = (code) => {
                     if (code === 'USD') return 1;
@@ -298,7 +403,35 @@
                 document.getElementById('finalVal').textContent = result.toLocaleString(undefined, {maximumFractionDigits: 2});
                 document.getElementById('rateInfo').textContent = `1 ${from} = ${(tRate/fRate).toFixed(4)} ${to}`;
                 document.getElementById('lastUpdate').textContent = `آخر تحديث: ${new Date().toLocaleTimeString('ar-SA')}`;
+                
+                updateChart();
             } catch (e) { console.error("API Error"); }
+        }
+
+        function shareResult() {
+            const text = `صرف برو كاش: ${document.getElementById('fromAmount').value} ${document.getElementById('fromCurrency').value} تساوي ${document.getElementById('toAmount').value} ${document.getElementById('toCurrency').value}`;
+            navigator.clipboard.writeText(text);
+            alert("تم نسخ النتيجة لمشاركتها!");
+        }
+
+        function updateChart() {
+            const ctx = document.getElementById('miniChart').getContext('2d');
+            if (myChart) myChart.destroy();
+            myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['السبت', 'الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'اليوم'],
+                    datasets: [{
+                        label: 'مؤشر تقريبي',
+                        data: [12, 19, 15, 17, 14, 20, 22],
+                        borderColor: '#3b82f6',
+                        tension: 0.4,
+                        fill: true,
+                        backgroundColor: 'rgba(59, 130, 246, 0.1)'
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { display: false }, x: { grid: { display: false } } } }
+            });
         }
 
         function swap() {
@@ -315,8 +448,16 @@
             document.getElementById('themeBtn').textContent = isDark ? '🌙 الوضع الليلي' : '☀️ الوضع الفاتح';
         }
 
+        // Calculator Logic
+        let calcExpr = "";
+        function toggleCalc() { document.getElementById('calcModal').classList.toggle('active'); }
+        function btnClick(v) { calcExpr += v; document.getElementById('calcDisplay').innerText = calcExpr; }
+        function clearCalc() { calcExpr = ""; document.getElementById('calcDisplay').innerText = "0"; }
+        function backspace() { calcExpr = calcExpr.slice(0, -1); document.getElementById('calcDisplay').innerText = calcExpr || "0"; }
+        function calculate() { try { calcExpr = eval(calcExpr).toString(); document.getElementById('calcDisplay').innerText = calcExpr; } catch { document.getElementById('calcDisplay').innerText = "خطأ"; calcExpr = ""; } }
+
         document.querySelectorAll('input, select').forEach(el => el.addEventListener('input', update));
-        window.onload = update;
+        window.onload = () => { loadPreferences(); update(); };
     </script>
 </body>
 </html>
